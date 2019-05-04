@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-
-function Todo({ todo, index }) {
-  return <div className="todo">{todo.text}</div>;
-}
+import TodoForm from "./components/TodoForm/TodoForm";
+import Todo from "./components/Todo/Todo";
+import "./App.css";
 
 function App() {
   const [todos, setTodos] = useState([
@@ -20,12 +19,36 @@ function App() {
     }
   ]);
 
+  const addTodo = text => {
+    const newTodos = [...todos, { text }];
+    setTodos(newTodos);
+  };
+
+  const completeTodo = index => {
+    const newTodos = [...todos];
+    newTodos[index].isCompleted = true;
+    setTodos(newTodos);
+  };
+
+  const removeTodo = index => {
+    const newTodos = [...todos];
+    newTodos.splice(index, 1);
+    setTodos(newTodos);
+  };
+
   return (
     <div className="app">
       <div className="todo-list">
         {todos.map((todo, index) => (
-          <Todo key={index} index={index} todo={todo} />
+          <Todo
+            key={index}
+            index={index}
+            todo={todo}
+            completeTodo={completeTodo}
+            removeTodo={removeTodo}
+          />
         ))}
+        <TodoForm addTodo={addTodo} />
       </div>
     </div>
   );
